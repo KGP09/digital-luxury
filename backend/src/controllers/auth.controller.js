@@ -66,7 +66,7 @@ export const login = async (req, res) => {
             message: "Login Error"
         })
     }
-    console.log("Login Succesfull! ", req.user);
+    console.log("Login Succesfull! ");
 }
 export const logout = (req, res) => {
     try {
@@ -85,4 +85,17 @@ export const logout = (req, res) => {
         })
     }
     console.log("Logout Succesfull!");
+}
+export const profile = async (req, res) => {
+    try {
+        const { user, bookings } = req
+        res.status(500).json({
+            user: user,
+            bookings: bookings
+        })
+    } catch (error) {
+        res.status(500).json({
+            message: "Internal Error!"
+        })
+    }
 }
