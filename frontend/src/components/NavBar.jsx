@@ -1,9 +1,15 @@
 import React from 'react';
-import { Link, NavLink} from 'react-router';
+import { Link, NavLink, useNavigate} from 'react-router';
 import { useAuthStore } from '../store/authStore';
-
+import toast from 'react-hot-toast';
 export default function NavBar() {
-    const {auth} = useAuthStore()
+    const {authUser , logout} = useAuthStore()
+    console.log(authUser);
+    const handleLogout = ()=>{
+      logout()
+    }
+    const navigate = useNavigate()
+    const search = ()=>{navigate("/") }
     return (
     <div className="">
       <div className="navbar bg-base-100">
@@ -11,7 +17,7 @@ export default function NavBar() {
           <Link to={"/"} className="btn btn-ghost text-2xl">Digital Luxury</Link>
         </div>
         <div className="navbar-end">
-          <button className="btn btn-ghost btn-circle">
+          <button onClick={search} className="btn btn-ghost btn-circle">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -47,7 +53,7 @@ export default function NavBar() {
             </div>
           </button>
           {
-            auth ? 
+            authUser ? 
             <div className="dropdown dropdown-end">
             <div
               tabIndex={0}
@@ -57,7 +63,7 @@ export default function NavBar() {
               <div className="w-10 rounded-full">
                 <img
                   alt="Tailwind CSS Navbar component"
-                  src= "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                  src= {authUser.profilePic || "/avatar.png" } 
                 />
               </div>
             </div>
@@ -74,7 +80,7 @@ export default function NavBar() {
                     <a>Bookings</a>
                   </li>
                   <li>
-                    <a>Logout</a>
+                    <button onClick={handleLogout} >Logout</button>
                   </li>
                 </ul>
             </div> : 

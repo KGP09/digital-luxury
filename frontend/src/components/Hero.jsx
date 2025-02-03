@@ -1,12 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { useHotelStore } from "../store/hotelStore";
+import {useAuthStore} from "../store/authStore"
+import { useNavigate } from "react-router-dom";
 
 export default function Hero() {
-  const[dest , setDestination] = useState('')
-  const[ad , setAD ] = useState('')
-  const[dd , setDD ] = useState('')
-  console.log(dest , ad , dd);
+  const [dest, setDestination] = useState("");
+  const [ad, setAD] = useState("");
+  const [dd, setDD] = useState("");
+  const {getHotels} = useHotelStore()
+  const {authUser} = useAuthStore();
+  const navigate = useNavigate();
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent page refresh
+    if(!authUser){
+      navigate("/login");
+      return
+    }
+    console.log("Destination:", dest, "Arrival Date:", ad, "Departure Date:", dd);
+    const res = await getHotels({ city: dest, arrival_date: ad ,departure_date: dd})  
+    console.log(res);
+  };
   return (
-    <div className=" z-[-1px] relative h-screen flex items-center justify-center">
+    <div className="z-[-1px] relative h-screen flex items-center justify-center">
       {/* Background Image with Gradient Container */}
       <div className="absolute top-0 left-0 w-full h-screen">
         <img
@@ -17,39 +32,48 @@ export default function Hero() {
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-white via-transparent to-white"></div>
       </div>
+
       {/* Overlay Content */}
       <div className="relative z-20 text-center">
-        {/* Inputs */}
-        <div className="mt-[-90px] "> {/* Adjust the margin-top value to push content upwards */}
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="mt-[-90px]">
           <input
             type="text"
             placeholder="Enter destination"
-            onChange={(e)=> setDestination(e.target.value)}
+            value={dest}
+            onChange={(e) => setDestination(e.target.value)}
             className="text-xl input input-bordered w-96 text-center bg-white text-gray-800 shadow-md"
           />
-          <div className=" flex justify-center gap-6 mt-4 relative">
+
+          <div className="flex justify-center gap-6 mt-4 relative">
             {/* Arrival Date Input */}
             <div className="relative group w-48">
               <input
                 type="date"
-                onChange={(e)=> setAD(e.target.value)}
-
-                className=" text-1xl input input-bordered w-full text-center bg-white text-gray-800 shadow-md"
+                value={ad}
+                onChange={(e) => setAD(e.target.value)}
+                className="text-1xl input input-bordered w-full text-center bg-white text-gray-800 shadow-md"
               />
             </div>
+
             {/* Departure Date Input */}
             <div className="relative group w-48">
               <input
                 type="date"
-                onChange={(e)=> setDD(e.target.value)}
-
+                value={dd}
+                onChange={(e) => setDD(e.target.value)}
                 className="input input-bordered w-full text-center bg-white text-gray-800 shadow-md"
               />
             </div>
           </div>
 
-          <button className="text-white btn glass  mt-6  hover:bg-slate-250  hover:text-black">Search</button>
-        </div>
+          <button
+            type="submit"
+            className="text-white btn glass mt-6 hover:bg-slate-250 hover:text-black"
+          >
+            Search
+          </button>
+        </form>
       </div>
     </div>
   );

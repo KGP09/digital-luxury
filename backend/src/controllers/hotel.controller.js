@@ -3,14 +3,12 @@ import axios from "axios";
 export const getHotels = async (req, res) => {
     try {
         const { city, arrival_date, departure_date, adults, room_quantity } = req.body;
-
-        // Validate required fields
+        console.log(city + " " + arrival_date + " " + departure_date);
         if (!city || !arrival_date || !departure_date) {
             return res.status(400).json({
                 message: "Check all fields!",
             });
         }
-        console.log(arrival_date + " " + departure_date);
         const code = {
             method: "GET",
             url: "https://booking-com15.p.rapidapi.com/api/v1/hotels/searchDestination",
@@ -56,6 +54,7 @@ export const getHotels = async (req, res) => {
         };
 
         const response = (await axios.request(options)).data;
+        // console.log(response);
         console.log(response.data.hotels);
         return res.status(200).json(response.data.hotels);
     } catch (error) {

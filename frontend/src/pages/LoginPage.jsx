@@ -1,13 +1,22 @@
 import { useState } from "react";
 import AuthImagePattern from "../components/AuthImagePattern";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Loader2, Lock, Mail, MessageSquare } from "lucide-react";
+import { useAuthStore } from "../store/authStore";
 
 export default function LoginPage() {
     const [showPassword , setShowPassword] = useState("password");
     const [email , setEmail ] = useState("")
     const [password , setPassword ] = useState("")
-    console.log(email , password);
+    const {login} = useAuthStore()
+    const navigate = useNavigate()
+    const handleSubmit = (e)=>{
+      e.preventDefault();
+      if(login({email , password})){
+        console.log('login done!');;
+        navigate("/");
+      }
+    }
   return (
     <div className="h-screen grid lg:grid-cols-2">
       {/* Left Side - Form */}
@@ -28,7 +37,7 @@ export default function LoginPage() {
           </div>
 
           {/* Form */}
-          <form  className="space-y-6">
+          <form onSubmit={handleSubmit}  className="space-y-6">
             <div className="form-control">
               <label className="label">
                 <span className="label-text font-medium">Email</span>

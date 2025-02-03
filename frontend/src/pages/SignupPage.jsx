@@ -1,14 +1,21 @@
 import { useState } from "react"
 import AuthImagePattern from "../components/AuthImagePattern"
 import { Eye, EyeOff, Loader2, Lock, Mail, MessageSquare, Phone, User } from "lucide-react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { useAuthStore } from "../store/authStore"
 export default function SignupPage() {
   const [showPassword , setShowPassword] = useState(false)
   const [name , setName] = useState('')
   const [email , setEmail] = useState('')
   const [password , setPassword] = useState('')
   const [phoneNumber , setPhoneNumber] = useState('')
-    const formDate = {}
+  const {signup} = useAuthStore();
+  const navigate = useNavigate()
+  const handleSubmit = (e)=>{
+    e.preventDefault();
+      if( signup({username:name , email , password , mobileNumber : phoneNumber  }))
+      navigate("/")
+  }
   return (
     <div className="min-h-screen grid lg:grid-cols-2" >
       <div className="flex flex-col justify-center items-center p-6 sm:p-12">
@@ -25,7 +32,7 @@ export default function SignupPage() {
               <p className="text-base-content/60">Get started with your free account</p>
             </div>
           </div>
-          <form className="space-y-6" >
+          <form onSubmit={handleSubmit} className="space-y-6" >
             <div className="form-control">
               <label className="label"
               >
