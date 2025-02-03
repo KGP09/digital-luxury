@@ -7,7 +7,13 @@ import hotelRoutes from "./src/routes/hotel.route.js"
 import bookingRoutes from "./src/routes/booking.route.js"
 import cors from "cors"
 import cookieParser from "cookie-parser"
-app.use(cors());
+app.use(
+    cors({
+        origin: "http://localhost:5173", // Explicitly allow frontend origin
+        credentials: true, // Allow cookies & auth headers
+    })
+);
+
 
 dotenv.config()
 app.use(express.json())

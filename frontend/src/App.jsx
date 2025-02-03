@@ -4,6 +4,9 @@ import Layout from './Layout'
 import Hero from './components/Hero'
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
+import {Toaster} from "react-hot-toast"
+import { useEffect } from 'react'
+import { useAuthStore } from './store/authStore'
 const router = createBrowserRouter( createRoutesFromElements(
    <Route>
       <Route path='/' element={<Layout/>} >
@@ -15,8 +18,15 @@ const router = createBrowserRouter( createRoutesFromElements(
 )) 
 
 function App() {
+  const {checkAuth} = useAuthStore();
+  useEffect(()=>{
+    checkAuth()
+  } , [checkAuth])
   return(
+    <>
+      <Toaster />
       <RouterProvider router={router}/>
+    </>
   )
 }
 
