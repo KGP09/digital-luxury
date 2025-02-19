@@ -56,7 +56,7 @@ export const getHotels = async (req, res) => {
         const response = (await axios.request(options)).data;
         // console.log(response);
         console.log(response.data.hotels);
-        return res.status(200).json(response.data.hotels);
+        return res.status(200).json({ city_code: id, hotels: response.data.hotels });
     } catch (error) {
         console.error("GET HOTELS Error:", error.message);
         return res.status(500).json({
