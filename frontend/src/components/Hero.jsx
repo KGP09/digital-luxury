@@ -2,24 +2,30 @@ import React, { useState } from "react";
 import { useHotelStore } from "../store/hotelStore";
 import {useAuthStore} from "../store/authStore"
 import { useNavigate } from "react-router-dom";
+import HotelLoading from "../skeleton/HotelLoading";
 
 export default function Hero() {
   const [dest, setDestination] = useState("");
   const [ad, setAD] = useState("");
   const [dd, setDD] = useState("");
-  const {getHotels} = useHotelStore()
+  const {getHotels } = useHotelStore()
   const {authUser} = useAuthStore();
   const navigate = useNavigate();
+  const {city_code , hotels_of_city} = useHotelStore()
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent page refresh
     if(!authUser){
       navigate("/login");
       return
     }
+
     console.log("Destination:", dest, "Arrival Date:", ad, "Departure Date:", dd);
     const res = await getHotels({ city: dest, arrival_date: ad ,departure_date: dd})  
-    console.log(res);
-  };
+    // while(!res) <HotelLoading/>
+    console.log( "RES: " ,(res));
+    // if(!city_code)  navigate('/')
+    if(res) navigate(`/hotels/${res.city_code}`)
+  }
   return (
     <div className="z-[-1px] relative h-screen flex items-center justify-center">
       {/* Background Image with Gradient Container */}
@@ -36,7 +42,7 @@ export default function Hero() {
       {/* Overlay Content */}
       <div className="relative z-20 text-center">
         {/* Form */}
-        <form onSubmit={handleSubmit} className="mt-[-90px]">
+        <form className="mt-[-90px]">
           <input
             type="text"
             placeholder="Enter destination"
@@ -68,7 +74,7 @@ export default function Hero() {
           </div>
 
           <button
-            type="submit"
+            onClick={handleSubmit}
             className="text-white btn glass mt-6 hover:bg-slate-250 hover:text-black"
           >
             Search
