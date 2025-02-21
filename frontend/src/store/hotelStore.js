@@ -38,9 +38,9 @@ export const useHotelStore = create((set, get) => ({
                     "Content-Type": "application/json",
                 },
             });
-            // set({ hotel_code: res.data })
-            // set({ rooms_of_hotel: res.data })
-            console.log("GET ROOMS RES: ", res.data.details);
+            // console.log("GET ROOMS RES: ", res.data, "hotel code: ", (res.data.desc_info.data[0].hotel_id))
+            set({ hotel_code: res.data.desc_info.data[0].hotel_id })
+            set({ rooms_of_hotel: res.data })
             return res.data
         } catch (error) {
             console.log(error);

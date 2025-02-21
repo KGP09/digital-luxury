@@ -5,7 +5,7 @@ import Footer from './components/Footer'
 
 export default function Layout() {
   return (
-    <div data-theme="light" >
+    <div  >
         <NavBar/>
         <Outlet/>
         <Footer/>        
