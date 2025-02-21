@@ -21,9 +21,7 @@ export default function Hero() {
 
     console.log("Destination:", dest, "Arrival Date:", ad, "Departure Date:", dd);
     const res = await getHotels({ city: dest, arrival_date: ad ,departure_date: dd})  
-    // while(!res) <HotelLoading/>
     console.log( "RES: " ,(res));
-    // if(!city_code)  navigate('/')
     if(res) navigate(`/hotels/${res.city_code}`)
   }
   return (

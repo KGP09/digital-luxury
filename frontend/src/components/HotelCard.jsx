@@ -1,15 +1,17 @@
 import { MapPin, Star } from 'lucide-react';
 import React from 'react'
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { useHotelStore } from '../store/hotelStore';
 export default function HotelCard(hotelData) {
     const hotel = hotelData.hotel
     const {city_code , arrival_date , departure_date , getRooms } = useHotelStore()
+    const navigate = useNavigate();
     const handleClick = async () =>{
         const res = await getRooms({ hotel_id : hotel.hotel_id , arrival_date , departure_date});
-        console.log(res);
+        navigate(`/hotels/${city_code}/${hotel.hotel_id}`)
+        // console.log(res);
     }
-    console.log(hotel)
+    // console.log(hotel)
     return (
         <div className="card w-full max-w-md bg-white shadow-xl rounded-xl">
           <figure>
@@ -41,7 +43,7 @@ export default function HotelCard(hotelData) {
             </p>
             <p className="text-sm text-bold  text-gray-700">{hotel?.property?.reviewScoreWord ?? "No Rating"}</p>
             <div className="card-actions mt-2">
-              <Link to= {`/hotels/${city_code}/${hotel.hotel_id}`} onClick={handleClick}  className="btn btn-primary w-full">Book Now</Link>
+              <button  onClick={handleClick}  className="btn btn-primary w-full">Book Now</button>
             </div>
           </div>
         </div>
